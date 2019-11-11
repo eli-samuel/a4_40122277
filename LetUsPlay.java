@@ -9,7 +9,7 @@ public class LetUsPlay {
 
         Scanner input = new Scanner(System.in);
         Board board;
-        Player p1, p2, turn = new Player();
+        Player p1, p2, playerTurn = new Player();
         Dice dice = new Dice();
         Random rand = new Random();
         String name1, name2;
@@ -73,28 +73,61 @@ public class LetUsPlay {
 
         int goesFirst = rand.nextInt(2)+1;
         if (goesFirst == 1) {
-            turn = new Player(p1);
+            playerTurn = new Player(p1);
             System.out.println(p1.getName() + " goes first.");
         }
         else if (goesFirst == 2) {
-            turn = new Player(p1);
+            playerTurn = new Player(p1);
             System.out.println(p2.getName() + " goes first.");
         }
 
         // LET THE GAMES BEGIN
 
         boolean gameStatus = true;
+        int sumOfDice = 0;
         while (gameStatus) { // Giant while loop containing the game
-            if (turn.getEnergy() <= 0) {
+            if (playerTurn.getEnergy() <= 0) {
                 for (int i=0; i<3; i++) {
                     dice.rollDice();
                     if (dice.isDouble()) {
-                        turn.setEnergy(turn.getEnergy()+2);
+                        playerTurn.setEnergy(playerTurn.getEnergy()+2);
                     }
                 }
             }
 
-            System.out.println(turn);
+            // Player moves
+            if (playerTurn.getEnergy() > 0) {
+                sumOfDice = dice.rollDice();
+                System.out.println(sumOfDice);
+                int newX = (sumOfDice/board.getSize()) + playerTurn.getX();
+                int newY = (sumOfDice%board.getSize()) + playerTurn.getY();
+                boolean move = true;
+                while (newX >= board.getSize() || newY >= board.getSize()) {
+                    // if x is off the board
+                    if (newX >= board.getSize() && newY < board.getSize() && playerTurn.getLevel() < numLevels) {
+                        newX %= board.getSize();
+                        playerTurn.setLevel(playerTurn.getLevel()+1);
+                    }
+                    // if both off board
+                    else if (newX >= board.getSize() && newY >= board.getSize() && playerTurn.getLevel() < numLevels) {
+                        newX += newY/board.getSize();
+                        newY %= board.getSize();
+                    }
+                    else if (newX >= board.getSize() && newY >= board.getSize() && playerTurn.getLevel() >= numLevels) {
+                        move = false;
+                    }
+                }
+
+                if (move == true) {
+                    playerTurn.setX(newX);
+                    playerTurn.setY(newY);
+                }
+                if (move == false) {
+                    playerTurn.setEnergy(playerTurn.getEnergy()-2);
+                }
+            }
+
+            System.out.println(playerTurn);
             break;
         }
     }

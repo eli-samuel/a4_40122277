@@ -8,6 +8,10 @@ public class LetUsPlay {
 
         Scanner input = new Scanner(System.in);
         Board board;
+        Player p1;
+        Player p2;
+        String name1, name2;
+        int userBoard = 0, numLevels = 3, numSize = 4;
 
         System.out.println("*******************************");
         System.out.println("Welcome to banana game");
@@ -19,15 +23,13 @@ public class LetUsPlay {
                             + "\n\t\t-1 to enter your own board size"
                             + "\n→ What do you want to do? ");
 
-
         while (true) {
-            int userBoard = input.nextInt();
+            userBoard = input.nextInt();
             if (userBoard == 0) {
                 board = new Board();
                 break;
             }
             else if (userBoard == -1) {
-                int numLevels, numSize;
                 System.out.print("How many levels would you like? (minimum size 3, max 10) ");
                 numLevels = input.nextInt();
 
@@ -53,7 +55,21 @@ public class LetUsPlay {
             }
         }
 
+        System.out.println("\nYour " + numLevels + "D board has been set up and looks like this:");
         System.out.println(board);
+
+        System.out.print("What is player 1's name? (one word only) ");
+        name1 = input.next();
+
+        System.out.print("What is player 2's name? (one word only) ");
+        name2 = input.next();
+
+        p1 = new Player(name1);
+        p2 = new Player(name2);
+
+        System.out.println(p1);
+        System.out.println(p2);
+
 
     }
 }

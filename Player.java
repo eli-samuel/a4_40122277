@@ -37,7 +37,7 @@ public class Player {
     * Duplicator player constructor
     */
     public Player(Player p) {
-        return p;
+        //return p;
     }
 
 

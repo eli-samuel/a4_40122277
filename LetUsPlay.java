@@ -1,6 +1,7 @@
 // Final assignment
 
 import java.util.Scanner;
+import java.util.Random;
 
 public class LetUsPlay {
 
@@ -8,8 +9,8 @@ public class LetUsPlay {
 
         Scanner input = new Scanner(System.in);
         Board board;
-        Player p1;
-        Player p2;
+        Player p1, p2;
+        Random rand = new Random();
         String name1, name2;
         int userBoard = 0, numLevels = 3, numSize = 4;
 
@@ -18,10 +19,10 @@ public class LetUsPlay {
         System.out.println("*******************************");
 
         System.out.print("The default game board has 3 levels and each level has a 4x4 board."
-                            + "\nYou can use this default board size or change the size."
-                            + "\n\t\t0 to use the default board size"
-                            + "\n\t\t-1 to enter your own board size"
-                            + "\n→ What do you want to do? ");
+        + "\nYou can use this default board size or change the size."
+        + "\n\t\t0 to use the default board size"
+        + "\n\t\t-1 to enter your own board size"
+        + "\n→ What do you want to do? ");
 
         while (true) {
             userBoard = input.nextInt();
@@ -39,7 +40,7 @@ public class LetUsPlay {
                 }
 
                 System.out.print("What size do you want the nxn boards on each level to be? (minimum size 4x4, max 10x10) "
-                                        + "\n→ enter the value of n: ");
+                + "\n→ enter the value of n: ");
                 numSize = input.nextInt();
 
                 while (numSize > 10 || numSize < 4) {
@@ -67,9 +68,14 @@ public class LetUsPlay {
         p1 = new Player(name1);
         p2 = new Player(name2);
 
-        System.out.println(p1);
-        System.out.println(p2);
+        System.out.print("\nThe game has started. ");
 
-
+        int goesFirst = rand.nextInt(2)+1;
+        if (goesFirst == 1) {
+            System.out.println(p1.getName() + " goes first.");
+        }
+        if (goesFirst == 2) {
+            System.out.println(p2.getName() + " goes first.");
+        }
     }
 }

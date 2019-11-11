@@ -4,15 +4,14 @@ import java.util.Random;
 
 public class Dice {
 
-    private int die1;
-    private int die2;
+    private static int die1; // Error until I made it static, does it have to be static?
+    private static int die2;
 
 	/**
 	* Default Dice constructor
 	*/
-	public Dice(int die1, int die2) {
-		this.die1 = die1;
-		this.die2 = die2;
+	public Dice() {
+
 	}
 
 	/**

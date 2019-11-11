@@ -37,7 +37,11 @@ public class Player {
     * Duplicator player constructor
     */
     public Player(Player p) {
-        //return p;
+        setName(p.name);
+        setLevel(p.level);
+        setX(p.x);
+        setY(p.y);
+        setEnergy(p.energy);
     }
 
 

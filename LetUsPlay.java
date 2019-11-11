@@ -9,7 +9,8 @@ public class LetUsPlay {
 
         Scanner input = new Scanner(System.in);
         Board board;
-        Player p1, p2;
+        Player p1, p2, turn = new Player();
+        Dice dice = new Dice();
         Random rand = new Random();
         String name1, name2;
         int userBoard = 0, numLevels = 3, numSize = 4;
@@ -72,10 +73,29 @@ public class LetUsPlay {
 
         int goesFirst = rand.nextInt(2)+1;
         if (goesFirst == 1) {
+            turn = new Player(p1);
             System.out.println(p1.getName() + " goes first.");
         }
-        if (goesFirst == 2) {
+        else if (goesFirst == 2) {
+            turn = new Player(p1);
             System.out.println(p2.getName() + " goes first.");
+        }
+
+        // LET THE GAMES BEGIN
+
+        boolean gameStatus = true;
+        while (gameStatus) { // Giant while loop containing the game
+            if (turn.getEnergy() <= 0) {
+                for (int i=0; i<3; i++) {
+                    dice.rollDice();
+                    if (dice.isDouble()) {
+                        turn.setEnergy(turn.getEnergy()+2);
+                    }
+                }
+            }
+
+            System.out.println(turn);
+            break;
         }
     }
 }

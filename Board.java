@@ -63,7 +63,7 @@ public class Board {
     * @param
 	* @return
 	*/
-    private int getEnergyAdj(int l, int x, int y) {
+    public int getEnergyAdj(int l, int x, int y) {
         return board[l][x][y];
     }
 

@@ -9,7 +9,7 @@ public class LetUsPlay {
 
         Scanner input = new Scanner(System.in);
         Board board;
-        Player p1, p2, playerTurn = new Player();
+        Player p1, p2, playerTurn = new Player(), playerNotTurn = new Player();
         Dice dice = new Dice();
         Random rand = new Random();
         String name1, name2;
@@ -74,10 +74,12 @@ public class LetUsPlay {
         int goesFirst = rand.nextInt(2)+1;
         if (goesFirst == 1) {
             playerTurn = new Player(p1);
+            playerNotTurn = new Player(p2);
             System.out.println(p1.getName() + " goes first.");
         }
         else if (goesFirst == 2) {
-            playerTurn = new Player(p1);
+            playerTurn = new Player(p2);
+            playerNotTurn = new Player(p1);
             System.out.println(p2.getName() + " goes first.");
         }
 
@@ -98,10 +100,16 @@ public class LetUsPlay {
             // Player moves
             if (playerTurn.getEnergy() > 0) {
                 sumOfDice = dice.rollDice();
+
                 System.out.println(sumOfDice);
+
                 int newX = (sumOfDice/board.getSize()) + playerTurn.getX();
                 int newY = (sumOfDice%board.getSize()) + playerTurn.getY();
                 boolean move = true;
+
+                newX = newY = 3;
+                playerTurn.setLevel(2);
+
                 while (newX >= board.getSize() || newY >= board.getSize()) {
                     // if x is off the board
                     if (newX >= board.getSize() && newY < board.getSize() && playerTurn.getLevel() < numLevels) {
@@ -118,12 +126,68 @@ public class LetUsPlay {
                     }
                 }
 
+                Player potentialLocation = new Player(playerTurn);
+
                 if (move == true) {
-                    playerTurn.setX(newX);
-                    playerTurn.setY(newY);
+                    // If they land on the same square
+                    if (potentialLocation.equals(playerNotTurn)) {
+                        System.out.print("Player " + playerNotTurn.getName() + " is at your new location."
+                                            + "\n\t\t0 to challenge and risk loosing 50% of your energy units if"
+                                            + " you lose \n\t\t  OR move to the new location and get 50% of " + playerNotTurn.getName()
+                                            + "\'s energy units."
+                                            + "\n\n\t\t1 to move down one level to the new location or move to (0, 0) if at"
+                                            + "\n\t\t  level and lose 2 energy units. \nWhat do you want to do? ");
+                        while (true) {
+                            int sameLocation = input.nextInt();
+
+                            if (sameLocation == 1) {
+                                if (playerTurn.getLevel() != 0) {
+                                    playerTurn.setX(newX);
+                                    playerTurn.setY(newY);
+                                    playerTurn.setLevel(playerTurn.getLevel()-1);
+                                    playerTurn.setEnergy(playerTurn.getEnergy()+board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY())-2);
+                                }
+                                else {
+                                    playerTurn.setX(0);
+                                    playerTurn.setY(0);
+                                    playerTurn.setEnergy(playerTurn.getEnergy()-2);
+                                }
+                                break;
+                            }
+                            else if (sameLocation == 0) {
+                                int win = rand.nextInt(9)+1; // number between 1 and 10
+
+                                if (win < 6) { // A loses
+                                    playerTurn.setEnergy(playerTurn.getEnergy()/2);
+                                }
+                                else  { // A wins
+                                    playerNotTurn.setX(playerTurn.getX());
+                                    playerNotTurn.setY(playerTurn.getY());
+
+                                    playerTurn.setX(newX);
+                                    playerTurn.setY(newY);
+
+                                    playerTurn.setEnergy(playerTurn.getEnergy() + (playerNotTurn.getEnergy()/2));
+                                    playerNotTurn.setEnergy(playerNotTurn.getEnergy()/2);
+                                }
+                                break;
+                            }
+                            else System.out.print("Sorry but " + sameLocation + " is not a legal choice. Try again: ");
+                        }
+                    }
+                    else {
+                        playerTurn.setX(newX);
+                        playerTurn.setY(newY);
+                        playerTurn.setEnergy(playerTurn.getEnergy() + board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY()));
+                    }
                 }
                 if (move == false) {
                     playerTurn.setEnergy(playerTurn.getEnergy()-2);
+                }
+
+                if (playerTurn.getX() == board.getSize()-1 && playerTurn.getY() == board.getSize()-1 && playerTurn.getLevel() == board.getLevel()-1) {
+                    System.out.println("Player " + playerTurn.getName() + " wins!");
+                    gameStatus = false;
                 }
             }
 

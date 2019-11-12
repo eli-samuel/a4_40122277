@@ -88,27 +88,35 @@ public class LetUsPlay {
         boolean gameStatus = true;
         int sumOfDice = 0;
         while (gameStatus) { // Giant while loop containing the game
+            sumOfDice = 0;
+
             if (playerTurn.getEnergy() <= 0) {
                 for (int i=0; i<3; i++) {
-                    dice.rollDice();
+                    sumOfDice = dice.rollDice();
+                    System.out.println(playerTurn.getName() + " you rolled: " + dice);
                     if (dice.isDouble()) {
                         playerTurn.setEnergy(playerTurn.getEnergy()+2);
+                        System.out.println("Congratulations, you rolled double " + (sumOfDice/2) + "s. Your energy went up by 2 units");
                     }
                 }
             }
 
             // Player moves
-            if (playerTurn.getEnergy() > 0) {
+            else if (playerTurn.getEnergy() > 0) {
                 sumOfDice = dice.rollDice();
+                System.out.println(playerTurn.getName() + " you rolled: " + dice);
 
-                System.out.println(sumOfDice);
+                if (dice.isDouble()) {
+                    playerTurn.setEnergy(playerTurn.getEnergy()+2);
+                    System.out.println("Congratulations, you rolled double " + (sumOfDice/2) + "s. Your energy went up by 2 units");
+                }
 
                 int newX = (sumOfDice/board.getSize()) + playerTurn.getX();
                 int newY = (sumOfDice%board.getSize()) + playerTurn.getY();
                 boolean move = true;
 
-                newX = newY = 3;
-                playerTurn.setLevel(2);
+                //newX = newY = 3;
+                //playerTurn.setLevel(2);
 
                 while (newX >= board.getSize() || newY >= board.getSize()) {
                     // if x is off the board
@@ -158,9 +166,11 @@ public class LetUsPlay {
                                 int win = rand.nextInt(9)+1; // number between 1 and 10
 
                                 if (win < 6) { // A loses
+                                    System.out.println("Sorry, but you lost the challenge. Your energy is halved and you stay at the same spot.");
                                     playerTurn.setEnergy(playerTurn.getEnergy()/2);
                                 }
                                 else  { // A wins
+                                    System.out.println("Congratulations! You won the challenge. You get half of " + playerNotTurn.getName() + "\'s energy and switch spots with them.");
                                     playerNotTurn.setX(playerTurn.getX());
                                     playerNotTurn.setY(playerTurn.getY());
 
@@ -178,8 +188,10 @@ public class LetUsPlay {
                     else {
                         playerTurn.setX(newX);
                         playerTurn.setY(newY);
-                        playerTurn.setEnergy(playerTurn.getEnergy() + board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY()));
                     }
+                    playerTurn.setEnergy(playerTurn.getEnergy() + board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY()));
+                    System.out.println("Your energy is adjusted by " + board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY()) + " for landing at ("
+                                        + playerTurn.getX() + ", " + playerTurn.getY() + ") at level " + playerTurn.getLevel());
                 }
                 if (move == false) {
                     playerTurn.setEnergy(playerTurn.getEnergy()-2);
@@ -190,7 +202,7 @@ public class LetUsPlay {
                     gameStatus = false;
                 }
                 else {
-                    
+
                 }
             }
 

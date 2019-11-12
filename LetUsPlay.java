@@ -189,6 +189,9 @@ public class LetUsPlay {
                     System.out.println("Player " + playerTurn.getName() + " wins!");
                     gameStatus = false;
                 }
+                else {
+                    
+                }
             }
 
             System.out.println(playerTurn);

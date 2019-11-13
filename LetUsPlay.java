@@ -83,34 +83,36 @@ public class LetUsPlay {
             System.out.println(p2.getName() + " goes first.");
         }
 
+        System.out.println("==========================");
+
         // LET THE GAMES BEGIN
-        int sumOfDice = 0;
+        int sumOfDice = 0, newLevel = 0, roundNum = 1;
         boolean gameStatus = true;
-        int newLevel = 0;
+
         boolean move = true;
 
         while (gameStatus) { // Giant while loop containing the game
             sumOfDice = 0;
-            System.out.println("\n\n");
+            System.out.println("\nIt is " + playerTurn.getName() + "\'s turn:");
 
             if (playerTurn.getEnergy() <= 0) {
                 for (int i=0; i<3; i++) {
                     sumOfDice = dice.rollDice();
-                    System.out.println(playerTurn.getName() + " you rolled: " + dice);
+                    System.out.println("\t" + playerTurn.getName() + " you rolled: " + dice);
                     if (dice.isDouble()) {
                         playerTurn.setEnergy(playerTurn.getEnergy()+2);
-                        System.out.println("Congratulations, you rolled double " + (sumOfDice/2) + "s. Your energy went up by 2 units");
+                        System.out.println("\tCongratulations, you rolled double " + (sumOfDice/2) + "s. Your energy went up by 2 units");
                     }
                 }
             }
             // Player moves
             else if (playerTurn.getEnergy() > 0) {
                 sumOfDice = dice.rollDice();
-                System.out.println(playerTurn.getName() + " you rolled: " + dice);
+                System.out.println("\n" + playerTurn.getName() + " you rolled: " + dice);
 
                 if (dice.isDouble()) {
                     playerTurn.setEnergy(playerTurn.getEnergy()+2);
-                    System.out.println("Congratulations, you rolled double " + (sumOfDice/2) + "s. Your energy went up by 2 units");
+                    System.out.println("\tCongratulations, you rolled double " + (sumOfDice/2) + "s. Your energy went up by 2 units");
                 }
 
                 int newX = (sumOfDice/board.getSize()) + playerTurn.getX();
@@ -135,7 +137,7 @@ public class LetUsPlay {
                     }
                     else if ((newX >= board.getSize() && newY >= board.getSize())
                                 || (newX >= board.getSize() && newY < board.getSize()) && playerTurn.getLevel() >= numLevels-1) {
-                        System.out.println("Sorry, but you need to stay where you are. That throw takes you off the board. You lose 2 units of energy.");
+                        System.out.println("\tSorry, but you need to stay where you are. That throw takes you off the board. You lose 2 units of energy.");
                         playerTurn.setEnergy(playerTurn.getEnergy()-2);
                         move = false;
                         break;
@@ -177,11 +179,11 @@ public class LetUsPlay {
                                 int win = rand.nextInt(9)+1; // number between 1 and 10
 
                                 if (win < 6) { // A loses
-                                    System.out.println("Sorry, but you lost the challenge. Your energy is halved and you stay at the same spot.");
+                                    System.out.println("\n\tSorry, but you lost the challenge. Your energy is halved and you stay at the same spot.");
                                     playerTurn.setEnergy(playerTurn.getEnergy()/2);
                                 }
                                 else  { // A wins
-                                    System.out.println("Congratulations! You won the challenge. You get half of " + playerNotTurn.getName() + "\'s energy and switch spots with them.");
+                                    System.out.println("\n\tCongratulations! You won the challenge. You get half of " + playerNotTurn.getName() + "\'s energy and switch spots with them.");
                                     playerNotTurn.setX(playerTurn.getX());
                                     playerNotTurn.setY(playerTurn.getY());
                                     playerNotTurn.setLevel(playerTurn.getLevel());
@@ -195,29 +197,35 @@ public class LetUsPlay {
                                 }
                                 break;
                             }
-                            else System.out.print("Sorry but " + sameLocation + " is not a legal choice. Try again: ");
+                            else System.out.print("\nSorry but " + sameLocation + " is not a legal choice. Try again: ");
                         }
                     }
                     else {
-                        System.out.println("Setting X and Y");
                         playerTurn.setX(newX);
                         playerTurn.setY(newY);
                         playerTurn.setLevel(newLevel);
                     }
                     playerTurn.setEnergy(playerTurn.getEnergy() + board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY()));
-                    System.out.println("Your energy is adjusted by " + board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY()) + " for landing at ("
+                    System.out.println("\tYour energy is adjusted by " + board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY()) + " for landing at ("
                                         + playerTurn.getX() + ", " + playerTurn.getY() + ") at level " + playerTurn.getLevel());
                 }
 
                 if (playerTurn.getX() == board.getSize()-1 && playerTurn.getY() == board.getSize()-1 && playerTurn.getLevel() == board.getLevel()-1) {
-                    System.out.println("Player " + playerTurn.getName() + " wins!");
+                    for (int i=0; i<10; i++) {
+                        System.out.println("Player " + playerTurn.getName() + " wins!");
+                    }
                     gameStatus = false;
+                    continue;
                 }
             }
-            System.out.println(playerTurn);
             extra = new Player(playerTurn);
             playerTurn = new Player(playerNotTurn);
             playerNotTurn = new Player(extra);
+            roundNum++;
+            if (roundNum%2 == 1) {
+                System.out.print("\nAt the end of this round:\n\t" + playerTurn + "\n\t" + playerNotTurn + "\nPress any key to continue to the next round... ");
+                String s = input.next();
+            }
         }
     }
 }

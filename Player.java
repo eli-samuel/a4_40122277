@@ -122,7 +122,8 @@ public class Player {
 	* @param
 	*/
 	public void setEnergy(int energy) {
-		this.energy = energy;
+        if (energy >= 0) this.energy = energy;
+        else this.energy = 0;
 	}
 
     /**
@@ -162,6 +163,6 @@ public class Player {
 	*/
 	@Override
 	public String toString() {
-		return "Player [name=" + name + ", level=" + level + ", x=" + x + ", y=" + y + ", energy=" + energy + "]";
+		return (name + " is on level " + level + " at location (" + x + ", " + y + ") and has " + energy + " units of energy");
 	}
 }

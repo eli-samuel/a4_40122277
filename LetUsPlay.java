@@ -152,8 +152,8 @@ public class LetUsPlay {
                 if (move == true) {
                     // If they land on the same square
                     if (potentialLocation.equals(playerNotTurn)) {
-                        System.out.print("Player " + playerNotTurn.getName() + " is at your new location." + playerNotTurn
-                                            + "\n\t\t0 to challenge and risk loosing 50% of your energy units if"
+                        System.out.print("Player " + playerNotTurn.getName() + " is at your new location."
+                                            + "\n\t\t0 to challenge and risk losing 50% of your energy units if"
                                             + " you lose \n\t\t  OR move to the new location and get 50% of " + playerNotTurn.getName()
                                             + "\'s energy units."
                                             + "\n\n\t\t1 to move down one level to the new location or move to (0, 0) if at"
@@ -211,9 +211,11 @@ public class LetUsPlay {
                 }
 
                 if (playerTurn.getX() == board.getSize()-1 && playerTurn.getY() == board.getSize()-1 && playerTurn.getLevel() == board.getLevel()-1) {
+                    System.out.println("\n");
                     for (int i=0; i<10; i++) {
                         System.out.println("Player " + playerTurn.getName() + " wins!");
                     }
+                    System.out.println("\n");
                     gameStatus = false;
                     continue;
                 }

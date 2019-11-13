@@ -15,9 +15,9 @@ public class LetUsPlay {
         String name1, name2;
         int userBoard = 0, numLevels = 3, numSize = 4;
 
-        System.out.println("*******************************");
-        System.out.println("Welcome to banana game");
-        System.out.println("*******************************");
+        System.out.println("* * * * * * * * * * * * * * * * * * * * * * * *");
+        System.out.println("\tWelcome to banana game");
+        System.out.println("* * * * * * * * * * * * * * * * * * * * * * * *");
 
         System.out.print("The default game board has 3 levels and each level has a 4x4 board."
         + "\nYou can use this default board size or change the size."
@@ -61,14 +61,11 @@ public class LetUsPlay {
         System.out.println(board);
 
         System.out.print("What is player 1's name? (one word only) ");
-        name1 = input.next();
+        p1 = new Player(input.next());
 
         System.out.print("What is player 2's name? (one word only) ");
-        name2 = input.next();
-
-        p1 = new Player(name1);
-        p2 = new Player(name2);
-
+        p2 = new Player(input.next());
+        
         System.out.print("\nThe game has started. ");
 
         int goesFirst = rand.nextInt(2)+1;
@@ -135,8 +132,7 @@ public class LetUsPlay {
                         newX += newY/board.getSize();
                         newY %= board.getSize();
                     }
-                    else if ((newX >= board.getSize() && newY >= board.getSize())
-                                || (newX >= board.getSize() && newY < board.getSize()) && playerTurn.getLevel() >= numLevels-1) {
+                    else if ((newX >= board.getSize() && newY >= board.getSize()) || (newX >= board.getSize() && newY < board.getSize()) && playerTurn.getLevel() >= numLevels-1) {
                         System.out.println("\tSorry, but you need to stay where you are. That throw takes you off the board. You lose 2 units of energy.");
                         playerTurn.setEnergy(playerTurn.getEnergy()-2);
                         move = false;
@@ -145,9 +141,7 @@ public class LetUsPlay {
                 }
 
                 Player potentialLocation = new Player(playerTurn);
-                potentialLocation.setX(newX);
-                potentialLocation.setY(newY);
-                potentialLocation.setLevel(newLevel);
+                changePos(potentialLocation, newX, newY, newLevel);
 
                 if (move == true) {
                     // If they land on the same square
@@ -163,14 +157,11 @@ public class LetUsPlay {
 
                             if (sameLocation == 1) {
                                 if (playerTurn.getLevel() != 0) {
-                                    playerTurn.setX(newX);
-                                    playerTurn.setY(newY);
-                                    playerTurn.setLevel(playerTurn.getLevel()-1);
+                                    changePos(playerTurn, newX, newY, playerTurn.getLevel()-1);
                                     playerTurn.setEnergy(playerTurn.getEnergy()+board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY())-2);
                                 }
                                 else {
-                                    playerTurn.setX(0);
-                                    playerTurn.setY(0);
+                                    changePos(playerTurn, 0, 0, 0);
                                     playerTurn.setEnergy(playerTurn.getEnergy()-2);
                                 }
                                 break;
@@ -184,13 +175,10 @@ public class LetUsPlay {
                                 }
                                 else  { // A wins
                                     System.out.println("\n\tCongratulations! You won the challenge. You get half of " + playerNotTurn.getName() + "\'s energy and switch spots with them.");
-                                    playerNotTurn.setX(playerTurn.getX());
-                                    playerNotTurn.setY(playerTurn.getY());
-                                    playerNotTurn.setLevel(playerTurn.getLevel());
 
-                                    playerTurn.setX(newX);
-                                    playerTurn.setY(newY);
-                                    playerTurn.setLevel(newLevel);
+                                    changePos(playerNotTurn, playerTurn.getX(), playerTurn.getY(), playerTurn.getLevel());
+
+                                    changePos(playerTurn, newX, newY, newLevel);
 
                                     playerTurn.setEnergy(playerTurn.getEnergy() + (playerNotTurn.getEnergy()/2));
                                     playerNotTurn.setEnergy(playerNotTurn.getEnergy()/2);
@@ -200,11 +188,7 @@ public class LetUsPlay {
                             else System.out.print("\nSorry but " + sameLocation + " is not a legal choice. Try again: ");
                         }
                     }
-                    else {
-                        playerTurn.setX(newX);
-                        playerTurn.setY(newY);
-                        playerTurn.setLevel(newLevel);
-                    }
+                    else changePos(playerTurn, newX, newY, newLevel);
                     playerTurn.setEnergy(playerTurn.getEnergy() + board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY()));
                     System.out.println("\tYour energy is adjusted by " + board.getEnergyAdj(playerTurn.getLevel(), playerTurn.getX(), playerTurn.getY()) + " for landing at ("
                                         + playerTurn.getX() + ", " + playerTurn.getY() + ") at level " + playerTurn.getLevel());
@@ -228,6 +212,13 @@ public class LetUsPlay {
                 System.out.print("\nAt the end of this round:\n\t" + playerTurn + "\n\t" + playerNotTurn + "\nPress any key to continue to the next round... ");
                 String s = input.next();
             }
+
         }
+    }
+
+    public static void changePos(Player p, int x, int y, int level) {
+        p.setX(x);
+        p.setY(y);
+        p.setLevel(level);
     }
 }

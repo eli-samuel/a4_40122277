@@ -71,7 +71,7 @@ public class Board {
 	* Create string representation of Board for printing
 	* @return
 	*/
-	@Override
+    @Override
 	public String toString() {
 
         String s = "";

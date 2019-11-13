@@ -143,8 +143,7 @@ public class Player {
 	* @return
 	*/
     public boolean won(Board b) {
-        if (level == b.getLevel() && x == b.getSize() && y == b.getSize()) return true;
-        else return false;
+        return (level == b.getLevel() && x == b.getSize() && y == b.getSize());
     }
 
     /**
@@ -153,8 +152,7 @@ public class Player {
 	* @return
 	*/
     public boolean equals(Player p) {
-        if (p.level == this.level && p.x == this.x && p.y == this.y) return true;
-        else return false;
+        return (p.level == this.level && p.x == this.x && p.y == this.y);
     }
 
 	/**

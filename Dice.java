@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class Dice {
 
-    private static int die1; // Error until I made it static, does it have to be static?
-    private static int die2;
+    private int die1;
+    private int die2;
 
 	/**
 	* Default Dice constructor
@@ -49,9 +49,8 @@ public class Dice {
     * @param
 	* @return
 	*/
-    public static boolean isDouble() {
-        if (die1 == die2) return true;
-        else return false;
+    public boolean isDouble() {
+        return (die1 == die2);
     }
 
 	/**

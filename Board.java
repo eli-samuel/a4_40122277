@@ -1,8 +1,8 @@
 public class Board {
 
     private int[][][] board;
-    private static final int MIN_LEVEL = 3;
-    private static final int MIN_SIZE = 3;
+    public static final int MIN_LEVEL = 3;
+    public static final int MIN_SIZE = 3;
     private int level;
     private int size;
 
@@ -10,6 +10,8 @@ public class Board {
 	* Board constructor
 	*/
 	public Board(int l, int x) {
+        level = l;
+        size = x;
         createBoard(l, x);
 	}
 

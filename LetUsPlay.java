@@ -25,8 +25,8 @@ public class LetUsPlay {
         + "\n\t\t-1 to enter your own board size"
         + "\n→ What do you want to do? ");
 
+        userBoard = input.nextInt();
         while (true) {
-            userBoard = input.nextInt();
             if (userBoard == 0) {
                 board = new Board();
                 break;
@@ -35,50 +35,38 @@ public class LetUsPlay {
                 System.out.print("How many levels would you like? (minimum size 3, max 10) ");
                 numLevels = input.nextInt();
 
-                while (numLevels > 10 || numLevels < 3) {
-                    System.out.print("Sorry but " + numLevels + " is not a legal choice. Try again: ");
-                    numLevels = input.nextInt();
-                }
+                while (numLevels > 10 || numLevels < Board.MIN_LEVEL) numLevels = legalChoice(numLevels, input);
 
-                System.out.print("What size do you want the nxn boards on each level to be? (minimum size 4x4, max 10x10) "
+                System.out.print("What size do you want the nxn boards on each level to be? (minimum size 3x3, max 10x10) "
                 + "\n→ enter the value of n: ");
                 numSize = input.nextInt();
 
-                while (numSize > 10 || numSize < 4) {
-                    System.out.print("Sorry but " + numSize + " is not a legal choice. Try again: ");
-                    numSize = input.nextInt();
-                }
+                while (numSize > 10 || numSize < Board.MIN_SIZE) numSize = legalChoice(numSize, input);
 
                 board = new Board(numLevels, numSize);
                 break;
             }
-            else {
-                System.out.print("Sorry, but " + userBoard + " is not a legal choice. Try again: ");
-            }
+            else userBoard = legalChoice(userBoard, input);
         }
 
-        System.out.println("\nYour " + numLevels + "D board has been set up and looks like this:");
-        System.out.println(board);
+        System.out.println("\nYour " + numLevels + "D board has been set up and looks like this:\n" + board);
 
         System.out.print("What is player 1's name? (one word only) ");
-        p1 = new Player(input.next());
+        playerTurn = new Player(input.next());
 
         System.out.print("What is player 2's name? (one word only) ");
-        p2 = new Player(input.next());
-        
+        playerNotTurn = new Player(input.next());
+
         System.out.print("\nThe game has started. ");
 
         int goesFirst = rand.nextInt(2)+1;
         if (goesFirst == 1) {
-            playerTurn = new Player(p1);
-            playerNotTurn = new Player(p2);
-            System.out.println(p1.getName() + " goes first.");
+            extra = new Player(playerTurn);
+            playerTurn = new Player(playerNotTurn);
+            playerNotTurn = new Player(extra);
         }
-        else if (goesFirst == 2) {
-            playerTurn = new Player(p2);
-            playerNotTurn = new Player(p1);
-            System.out.println(p2.getName() + " goes first.");
-        }
+        System.out.println(playerTurn.getName() + " goes first.");
+
 
         System.out.println("==========================");
 
@@ -177,7 +165,6 @@ public class LetUsPlay {
                                     System.out.println("\n\tCongratulations! You won the challenge. You get half of " + playerNotTurn.getName() + "\'s energy and switch spots with them.");
 
                                     changePos(playerNotTurn, playerTurn.getX(), playerTurn.getY(), playerTurn.getLevel());
-
                                     changePos(playerTurn, newX, newY, newLevel);
 
                                     playerTurn.setEnergy(playerTurn.getEnergy() + (playerNotTurn.getEnergy()/2));
@@ -204,15 +191,16 @@ public class LetUsPlay {
                     continue;
                 }
             }
+            // This could probably be made into a method
             extra = new Player(playerTurn);
             playerTurn = new Player(playerNotTurn);
             playerNotTurn = new Player(extra);
+
             roundNum++;
             if (roundNum%2 == 1) {
                 System.out.print("\nAt the end of this round:\n\t" + playerTurn + "\n\t" + playerNotTurn + "\nPress any key to continue to the next round... ");
                 String s = input.next();
             }
-
         }
     }
 
@@ -221,4 +209,10 @@ public class LetUsPlay {
         p.setY(y);
         p.setLevel(level);
     }
+
+    public static int legalChoice(int i, Scanner input) {
+        System.out.print("Sorry, but " + i + " is not a legal choice. Try again: ");
+        return input.nextInt();
+    }
+
 }

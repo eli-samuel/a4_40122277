@@ -84,9 +84,11 @@ public class LetUsPlay {
         }
 
         // LET THE GAMES BEGIN
-
-        boolean gameStatus = true;
         int sumOfDice = 0;
+        boolean gameStatus = true;
+        int newLevel = 0;
+        boolean move = true;
+
         while (gameStatus) { // Giant while loop containing the game
             sumOfDice = 0;
             System.out.println("\n\n");
@@ -113,8 +115,7 @@ public class LetUsPlay {
 
                 int newX = (sumOfDice/board.getSize()) + playerTurn.getX();
                 int newY = (sumOfDice%board.getSize()) + playerTurn.getY();
-                int newLevel = 0;
-                boolean move = true;
+                move = true;
 
                 while (newX >= board.getSize() || newY >= board.getSize()) {
                     // if x is off the board

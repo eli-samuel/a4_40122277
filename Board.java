@@ -1,6 +1,6 @@
 public class Board {
 
-    int[][][] board;
+    private int[][][] board;
     private static final int MIN_LEVEL = 3;
     private static final int MIN_SIZE = 3;
     private int level;

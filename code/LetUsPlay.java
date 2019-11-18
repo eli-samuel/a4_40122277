@@ -105,8 +105,16 @@ public class LetUsPlay {
                 move = true;
 
                 while (newX >= board.getSize() || newY >= board.getSize()) {
+                    // if player is at the second to last square of the last level
+                    if (playerTurn.getX() == board.getSize()-1 && playerTurn.getY() == board.getSize()-2 && player.getLevel() == board.getLevel()-1) {
+                        System.out.println("\tSince you are at the second to last square, you will be moved backwards on this roll.");
+                        newX = playerTurn.getX() - (sumOfDice/board.getSize());
+                        newY = playerTurn.getY() - (sumOfDice%board.getSize());
+                        break;
+                        // DOES HOW DOES THE PLAYER MOVE BACK IF THERE IS A PLAYER ALREADY ON THAT SPOT
+                    }
                     // if x is off the board
-                    if (newX >= board.getSize() && newY < board.getSize() && playerTurn.getLevel() < numLevels-1) {
+                    else if (newX >= board.getSize() && newY < board.getSize() && playerTurn.getLevel() < numLevels-1) {
                         newX %= board.getSize();
                         newLevel = playerTurn.getLevel()+1;
                     }
@@ -127,11 +135,9 @@ public class LetUsPlay {
                         break;
                     }
                 }
-
-                Player potentialLocation = new Player(playerTurn);
-                changePos(potentialLocation, newX, newY, newLevel);
-
                 if (move == true) {
+                    Player potentialLocation = new Player(playerTurn);
+                    changePos(potentialLocation, newX, newY, newLevel);
                     // If they land on the same square
                     if (potentialLocation.equals(playerNotTurn)) {
                         System.out.print("Player " + playerNotTurn.getName() + " is at your new location."

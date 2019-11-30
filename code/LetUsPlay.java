@@ -106,7 +106,7 @@ public class LetUsPlay {
 
                 while (newX >= board.getSize() || newY >= board.getSize()) {
                     // if player is at the second to last square of the last level
-                    if (playerTurn.getX() == board.getSize()-1 && playerTurn.getY() == board.getSize()-2 && player.getLevel() == board.getLevel()-1) {
+                    if (playerTurn.getX() == board.getSize()-1 && playerTurn.getY() == board.getSize()-2 && playerTurn.getLevel() == board.getLevel()-1) {
                         System.out.println("\tSince you are at the second to last square, you will be moved backwards on this roll.");
                         newX = playerTurn.getX() - (sumOfDice/board.getSize());
                         newY = playerTurn.getY() - (sumOfDice%board.getSize());
@@ -123,7 +123,7 @@ public class LetUsPlay {
                         newX += newY/board.getSize();
                         newY %= board.getSize();
                     }
-                    // if y off the board
+                    // if y off the board THIS IS THE SAME CALUCLATION AS IF THEYRE BOTH OFF THE BOARD
                     else if (newX < board.getSize() && newY >= board.getSize() && playerTurn.getLevel() < numLevels) {
                         newX += newY/board.getSize();
                         newY %= board.getSize();
@@ -170,7 +170,7 @@ public class LetUsPlay {
                                 else  { // A wins
                                     System.out.println("\n\tCongratulations! You won the challenge. You get half of " + playerNotTurn.getName() + "\'s energy and switch spots with them.");
 
-                                    changePos(playerNotTurn, playerTurn.getX(), playerTurn.getY(), playerTurn.getLevel());
+                                    playerNotTurn.moveTo(playerTurn); // USE MOVETO METHOD INSTEAD OMG
                                     changePos(playerTurn, newX, newY, newLevel);
 
                                     playerTurn.setEnergy(playerTurn.getEnergy() + (playerNotTurn.getEnergy()/2));

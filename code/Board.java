@@ -78,11 +78,11 @@ public class Board {
 
         String s = "";
 
-        for (int i=0; i<board.length; i++) {
+        for (int i=0; i<level; i++) {
             s = s.concat("\nLevel " + i + "\n-----------\n");
-            for (int j=0; j<board[i].length; j++) {
-                for (int k=0; k<board[i][j].length; k++) {
-                    s = s.concat(board[i][j][k] + "\t");
+            for (int j=0; j<size; j++) {
+                for (int k=0; k<size; k++) {
+                    s = s.concat(String.format("%5d", board[i][j][k]));
                 }
                 s = s.concat("\n");
             }

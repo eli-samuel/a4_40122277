@@ -4,9 +4,12 @@
 // For COMP 248 Section EC B - December 2, 2019
 // -----------------------------------------------------
 
-/* This program allows the user to create a CPU object in 2 different ways: by editing the no-argument constructor in the CPU.java class
- * or by editing the declaration of the CPU that creates the object using the 6-argument constructor. The program also tests 2 getters,
- * the mutator, the equals(), the isHigherGeneration(), and the toString() method and calculates the current price */
+/* This program allows two users to play a game via the console. The program has 4 classes: a class to create a 3D board,
+ * a class to create players with names, energy, and location, and a class to roll two die. The game works by the players
+ * taking turns to roll dice and move the amount of squares rolled. There are also challenges where one player lands on
+ * the same square as the other player, in which case there is a possible challenge to take their place. The players also
+ * gain or lose energy depending on how they move. If the player is at the second to last position, they are stuck, so
+ * their next roll will take them backwards instead. The game ends when a player reaches the last square. */
 
 
 import java.util.Scanner;

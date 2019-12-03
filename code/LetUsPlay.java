@@ -159,15 +159,13 @@ public class LetUsPlay {
                         newY %= board.getSize(); // Calculates the new y
                     }
                     // If both x and y are off the board and the player is at the max level
-                    else if (/*(newX >= board.getSize() && newY >= board.getSize()) || */(newX >= board.getSize() && newY < board.getSize()) && player[0].getLevel() >= numLevels-1) {
+                    else if ((newX >= board.getSize() && newY < board.getSize()) && player[0].getLevel() >= numLevels-1) {
                         System.out.println("\tSorry, but you need to stay where you are. That throw takes you off the board. You lose 2 units of energy.");
                         player[0].setEnergy(player[0].getEnergy()-2); // Decreases energy by 2
                         move = false;                                 // Stops the player from moving
                         break;                                        // Breaks out of the while loop
                     }
-                    else {
 
-                    }
                 }
 
                 // If the player can move
